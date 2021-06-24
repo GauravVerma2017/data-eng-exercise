@@ -24,18 +24,16 @@ Although the sample files are small, your program should be designed such that i
 
 It is totally permitted to make use of any sample code, libraries or other resources available on the internet. Directly copying someone else's answer to this exact question is not advisable.
 
-## Option 2
+# Solution Delivery
 
-If you have some personal code, or open source contribution, that you would be prepared to share with us, we can assess that instead.  The code should meet the following criteria:
+### pre-requisite setup
+1. Setup Spark in local machine.
+2. setup airflow in local machine.
+3. copy content of dags folder under $AIRFLOW_HOME location.
 
-- It should be at least 1-2 hours of your own work
-- Ideally, it should involve an element of data processing
-- It should demonstrate how you approach a problem
-- It should be something that you are able to discuss with us
-
-# Delivery
-
-You can submit your code however you want - send the details to your point of contact.  
-Please include a README containing your thoughts, and any setup instructions (if applicable) and keep the setup steps simple.
-
-Please ensure you do not include any confidential information.
+### Solution Design
+1. Written a dag with 3 tasks [2 file sensors and 1 pyspark task to do transformation]
+2. Dag will be triggered at 4 AM daily. File Sensor tasks will cover poke for files from source_1 and source_2.
+3. Based on SLA we can setup poking interval and setup alerting for on_retry, on_failure or on_sla.
+4. Once both files are available, next downstream task is pyspark job that will take run_date as input_argument.
+5. Pyspark job will read both files and pull data as per requirement and write in a output location. we enable logging inside pyspark job.
